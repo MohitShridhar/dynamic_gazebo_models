@@ -24,4 +24,21 @@
   <node pkg="gazebo_ros" type="spawn_model" name="gazebo_door2" args="-sdf -param spawn_door_2 -model flip_door_2 -x -4.452335 -y 5.078486 -z 0.3" respawn="false" output="screen">
   </node>
 
+  <include file="$(find sesto_navigation)/launch/sestos.launch">
+
+    <arg name="commandTopic" value="cmd_vel"/>
+    <arg name="odometryTopic" value="odom"/>
+    
+    <arg name="odometryFrame" value="odom"/>
+    <arg name="robotBaseFrame" value="sesto_frame"/>
+    <arg name="odometryRate" value="20.000000"/>
+    
+    <arg name="alpha1" value="0.000000"/>
+    <arg name="alpha2" value="0.000000"/>
+    <arg name="alpha3" value="0.000000"/>
+    <arg name="alpha4" value="0.000000"/>
+    <arg name="alpha5" value="0.000000"/>
+
+  </include>
+
 </launch>

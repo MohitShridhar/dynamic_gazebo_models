@@ -108,6 +108,7 @@
   <plugin name="flip_door" filename="libflip_door.so">
     <door_direction>counter_clockwise</door_direction>
     <model_domain_space>flip_door_</model_domain_space>
+    <bot_pose_topics>sesto0/modelPose/, sesto1/modelPose</bot_pose_topics>
   </plugin>
 
 
