@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="Elevator">
+    <pose>0 0 -0.5 0 0 0 </pose>
+    <link name="body">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.05 0 0 0 0 0</pose>
+        <mass>7.5</mass>  <!-- Don't touch; magic! -->
+        <inertia>
+          <ixx>1</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1</iyy>
+          <iyz>0</iyz>
+          <izz>1</izz>
+        </inertia>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>file://elevator.dae</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>file://elevator.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Blue</name>
+            <uri>__default__</uri>
+          </script>
+        </material>
+      </visual>
+      <gravity>0</gravity>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <self_collide>1</self_collide>
+    </link>
+
+    <joint name='translation_constraint' type='prismatic'>
+      <child>body</child>
+      <parent>world</parent>
+      <axis>
+        <xyz>0 0 -1</xyz>
+        <limit>
+          <lower>-40</lower>
+          <upper>40</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    
+  <plugin name="elevator_plugin" filename="libelevator_plugin.so"/>
+
+  </model>
+</sdf>

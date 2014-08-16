@@ -4,15 +4,10 @@ project(dynamic_models)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  gazebo_plugins
-  gazebo_ros
-  geometry_msgs
-  nodelet
-  roscpp
-  std_msgs
-  tf
-)
+include(FindProtobuf)
+find_package(catkin REQUIRED COMPONENTS roscpp nodelet tf gazebo_plugins gazebo_ros)
+find_package(Boost 1.40 COMPONENTS program_options REQUIRED)
+find_package(Protobuf REQUIRED)
 
 #add catkin sourced packages:
 catkin_package(
@@ -34,12 +29,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 #set the default path for built libraries to the "lib" directory
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 
-
 #Controller Executables:
 
 
 #Plugin Libraries:
-add_library(flip_door_plugin src/plugins/flip_door_plugin.cc)
-target_link_libraries(flip_door_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${PROTOBUF_LIBRARY})
+add_library(flip_door src/plugins/flip_door_plugin.cc)
+target_link_libraries(flip_door ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${PROTOBUF_LIBRARY})
 
 
