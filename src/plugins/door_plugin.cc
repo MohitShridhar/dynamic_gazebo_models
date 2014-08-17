@@ -37,7 +37,7 @@
 
 namespace gazebo
 { 
-  enum DoorType {Flip, Slide};
+  enum DoorType {FLIP, SLIDE};
 
   class DoorPlugin : public ModelPlugin
   {
@@ -102,19 +102,19 @@ namespace gazebo
       }
 
       if (door_type.compare(TYPE_SLIDE_OPEN) == 0) {
-        type = Slide;
+        type = SLIDE;
       } else {
-        type = Flip;
+        type = FLIP;
       }
     }
 
     void determineDoorDirection(sdf::ElementPtr _sdf)
     {
       if (!_sdf->HasElement("door_direction")) {
-        if (type == Flip) {
+        if (type == FLIP) {
           ROS_WARN("Door direction not specified in the plugin reference. Defaulting to 'clockwise'");
           door_direction = DIRECTION_FLIP_CLOCKWISE;
-        } else if (type == Slide) {
+        } else if (type == SLIDE) {
           ROS_WARN("Door direction not specified in the plugin reference. Defaulting to 'left'");
           door_direction = DIRECTION_SLIDE_LEFT;
         } 
@@ -126,12 +126,12 @@ namespace gazebo
 
     void checkDirectionValidity()
     {
-      if (type == Flip) {
+      if (type == FLIP) {
         if (door_direction.compare(DIRECTION_FLIP_CLOCKWISE) != 0 && door_direction.compare(DIRECTION_FLIP_COUNTER_CLOCKWISE) != 0) {
           ROS_WARN("Invalid door direction specified. Only two states possible: 'clockwise' OR 'counter_clockwise'. Defaulting to 'clockwise'");
           door_direction = DIRECTION_FLIP_CLOCKWISE;
         }
-      } else if (type == Slide) {
+      } else if (type == SLIDE) {
         if (door_direction.compare(DIRECTION_SLIDE_LEFT) != 0 && door_direction.compare(DIRECTION_SLIDE_RIGHT) != 0) {
           ROS_WARN("Invalid door direction specified. Only two states possible: 'left' OR 'right'. Defaulting to 'left'");
           door_direction = DIRECTION_SLIDE_LEFT;
@@ -177,10 +177,10 @@ namespace gazebo
     void cmd_ang_cb(const geometry_msgs::Twist::ConstPtr& msg)
     {
       if (isActive) {
-        if (type == Flip) {
+        if (type == FLIP) {
           setAngularVel(msg->angular.z);
           ROS_INFO("Door '%s' - Angular z: [%f]", door_model_name.c_str(), msg->angular.z);
-        } else if (type == Slide) {
+        } else if (type == SLIDE) {
           setLinearVel(msg->linear.x, msg->linear.y);
           ROS_INFO("Door '%s' - Linear x: [%f], y: [%f]", door_model_name.c_str(), msg->linear.x, msg->linear.y);
         }
@@ -189,9 +189,9 @@ namespace gazebo
 
     void updateLinkVel()
     {
-      if (type == Flip) {
+      if (type == FLIP) {
         doorLink->SetAngularVel(cmd_vel);
-      } else if (type == Slide) {
+      } else if (type == SLIDE) {
         doorLink->SetLinearVel(cmd_vel);
       }
     }

@@ -2,5 +2,5 @@
 
 string group_name
 string type
-uint32 active_units
+uint32[] active_units
 ----
