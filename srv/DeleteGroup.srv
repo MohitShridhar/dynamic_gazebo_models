@@ -1,0 +1,5 @@
+# Delete an existing group
+
+string group_name
+----
+string feedback

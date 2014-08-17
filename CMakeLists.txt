@@ -5,14 +5,18 @@ project(dynamic_models)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 include(FindProtobuf)
-find_package(catkin REQUIRED COMPONENTS roscpp nodelet tf gazebo_plugins gazebo_ros)
+find_package(catkin REQUIRED COMPONENTS roscpp nodelet tf gazebo_plugins gazebo_ros message_generation geometry_msgs)
 find_package(Boost 1.40 COMPONENTS program_options REQUIRED)
 find_package(Protobuf REQUIRED)
+
+#add services:
+add_service_files(DIRECTORY srv FILES AddGroup.srv DeleteGroup.srv OpenCloseDoors.srv SetVelDoors.srv TargetFloorElevators.srv)
+generate_messages(DEPENDENCIES std_msgs geometry_msgs)
 
 #add catkin sourced packages:
 catkin_package(
    LIBRARIES ${PROJECT_NAME}
-   CATKIN_DEPENDS roscpp nodelet std_msgs geometry_msgs tf gazebo_plugins gazebo_ros
+   CATKIN_DEPENDS roscpp nodelet std_msgs geometry_msgs tf gazebo_plugins gazebo_ros message_runtime
 )
 
 #find and add gazebo
@@ -30,10 +34,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 
 #Controller Executables:
-
+add_executable(dynamics_manager src/controllers/dynamics_manager.cpp)
+target_link_libraries(dynamics_manager ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${PROTOBUF_LIBRARY})
 
 #Plugin Libraries:
 add_library(door_plugin src/plugins/door_plugin.cc)
 target_link_libraries(door_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${PROTOBUF_LIBRARY})
+
 
 

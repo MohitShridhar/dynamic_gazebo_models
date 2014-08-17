@@ -148,7 +148,7 @@ namespace gazebo
         model_domain_space = _sdf->GetElement("model_domain_space")->Get<std::string>();
       }
 
-      ROS_INFO("Door '%s' initialized - Direction: %s, Domain Space: %s\n", door_model_name.c_str(), door_direction.c_str(), model_domain_space.c_str());
+      ROS_INFO("Door '%s' initialized - Type: %s, Direction: %s, Domain Space: %s\n", door_type.c_str(), door_model_name.c_str(), door_direction.c_str(), model_domain_space.c_str());
     }
 
     void initVars()
@@ -259,7 +259,7 @@ namespace gazebo
 
       return bot_pose_topic_list;
     }
-    
+
   };
 
   GZ_REGISTER_MODEL_PLUGIN(DoorPlugin)

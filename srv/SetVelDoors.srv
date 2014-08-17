@@ -1,0 +1,8 @@
+# Set linear or angular velocities of doors
+
+string group_name
+
+float32 lin_x
+float32 lin_y
+float32 ang_z
+----
