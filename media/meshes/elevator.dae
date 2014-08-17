@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 2.70.0 commit date:2014-04-10, commit time:11:49, hash:f93bc76</authoring_tool>
+    </contributor>
+    <created>2014-06-18T10:03:21</created>
+    <modified>2014-06-18T10:03:21</modified>
+    <unit name="meter" meter="10.604"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_cameras>
+    <camera id="Camera-camera" name="Camera">
+      <optics>
+        <technique_common>
+          <perspective>
+            <xfov sid="xfov">49.13434</xfov>
+            <aspect_ratio>1.777778</aspect_ratio>
+            <znear sid="znear">0.1</znear>
+            <zfar sid="zfar">100</zfar>
+          </perspective>
+        </technique_common>
+      </optics>
+      <extra>
+        <technique profile="blender">
+          <YF_dofdist>0</YF_dofdist>
+          <shiftx>0</shiftx>
+          <shifty>0</shifty>
+        </technique>
+      </extra>
+    </camera>
+  </library_cameras>
+  <library_images/>
+  <library_geometries>
+    <geometry id="Cube_006-mesh" name="Cube.006">
+      <mesh>
+        <source id="Cube_006-mesh-positions">
+          <float_array id="Cube_006-mesh-positions-array" count="48">-0.09430396 -0.09430396 -0.09430396 -0.09430396 -0.07553315 -0.07777857 -0.09430396 0.07781541 -0.07777857 -0.09430396 0.07781541 0.0755701 -0.09430396 0.09430396 0.09430408 -0.09430396 0.09430396 -0.09430396 -0.09430396 -0.09430396 0.09430408 -0.09430396 -0.07553315 0.0755701 0.09430408 -0.09430396 0.09430408 0.09430408 -0.09430396 -0.09430396 0.09430408 0.09430396 0.09430408 0.09430408 0.09430396 -0.09430396 0.09430408 -0.07553315 -0.07777857 0.09430408 -0.07553315 0.0755701 0.09430408 0.07781541 0.0755701 0.09430408 0.07781541 -0.07777857</float_array>
+          <technique_common>
+            <accessor source="#Cube_006-mesh-positions-array" count="16" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Cube_006-mesh-normals">
+          <float_array id="Cube_006-mesh-normals-array" count="96">-1 0 0 -1 0 0 0 -1 0 0 0 1 0 1 0 0 0 -1 1 0 0 0 -1 0 0 -1 0 0 0 -1 0 0 1 0 1 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 -1 0 -1 0 0 0 0 1 0 1 0 0 0 -1 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 0 0 -1 0 0 1 0 1 0</float_array>
+          <technique_common>
+            <accessor source="#Cube_006-mesh-normals-array" count="32" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Cube_006-mesh-vertices">
+          <input semantic="POSITION" source="#Cube_006-mesh-positions"/>
+        </vertices>
+        <polylist count="32">
+          <input semantic="VERTEX" source="#Cube_006-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Cube_006-mesh-normals" offset="1"/>
+          <vcount>3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 </vcount>
+          <p>6 0 7 0 0 0 7 1 1 1 0 1 8 2 6 2 0 2 8 3 10 3 4 3 4 4 10 4 11 4 0 5 5 5 11 5 13 6 10 6 8 6 14 7 3 7 15 7 3 8 2 8 15 8 14 9 13 9 7 9 2 10 1 10 12 10 13 11 12 11 1 11 5 12 0 12 1 12 4 13 5 13 3 13 5 14 1 14 2 14 5 15 2 15 3 15 3 16 7 16 4 16 9 17 8 17 0 17 7 18 6 18 4 18 6 19 8 19 4 19 5 20 4 20 11 20 9 21 0 21 11 21 12 22 13 22 9 22 13 23 14 23 10 23 11 24 10 24 14 24 13 25 8 25 9 25 9 26 11 26 12 26 11 27 14 27 15 27 11 28 15 28 12 28 3 29 14 29 7 29 15 30 2 30 12 30 7 31 13 31 1 31</p>
+        </polylist>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_controllers/>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="Camera" name="Camera" type="NODE">
+        <matrix sid="transform">0.6858805 -0.3173701 0.6548619 7.481132 0.7276338 0.3124686 -0.6106656 -6.50764 -0.01081678 0.8953432 0.4452454 5.343665 0 0 0 1</matrix>
+        <instance_camera url="#Camera-camera"/>
+      </node>
+      <node id="Cube_006" name="Cube_006" type="NODE">
+        <matrix sid="transform">1.354642 0 0 -0.01117456 0 0.8829969 0 -0.03046834 0 0 1.409306 0.1828508 0 0 0 1</matrix>
+        <instance_geometry url="#Cube_006-mesh"/>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>

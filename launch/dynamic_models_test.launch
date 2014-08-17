@@ -14,14 +14,29 @@
 
   <param name="spawn_door_1" command="$(find xacro)/xacro.py $(find dynamic_models)/models/flip_door_right.sdf" />
 
-  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_door1" args="-sdf -param spawn_door_1 -model flip_door_1 -x -3.042358 -y 5.532777 -z 0.3" respawn="false" output="screen">
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_door1" args="-sdf -param spawn_door_1 -model door_1 -x -3.042358 -y 5.532777 -z 0.3" respawn="false" output="screen">
   </node>
 
   <!-- Flip Door Right -->
 
   <param name="spawn_door_2" command="$(find xacro)/xacro.py $(find dynamic_models)/models/flip_door_left.sdf" />
 
-  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_door2" args="-sdf -param spawn_door_2 -model flip_door_2 -x -4.452335 -y 5.078486 -z 0.3" respawn="false" output="screen">
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_door2" args="-sdf -param spawn_door_2 -model door_2 -x -4.452335 -y 5.078486 -z 0.3" respawn="false" output="screen">
   </node>
+
+  <!-- Slide Door Right -->
+
+  <param name="spawn_door_3" command="$(find xacro)/xacro.py $(find dynamic_models)/models/slide_right.sdf" />
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_door3" args="-sdf -param spawn_door_3 -model door_3 -x 3.042358 -y 5.532777 -z 0.3" respawn="false" output="screen">
+  </node>
+
+  <!-- Slide Door Left -->
+
+  <param name="spawn_door_4" command="$(find xacro)/xacro.py $(find dynamic_models)/models/slide_left.sdf" />
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_door4" args="-sdf -param spawn_door_4 -model door_4 -x 3.042358 -y 8.532777 -z 0.3" respawn="false" output="screen">
+  </node>
+
 
 </launch>

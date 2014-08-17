@@ -68,7 +68,12 @@
       </axis>
     </joint>
 
-    <plugin name="elevator_doors_plugin" filename="libelevator_doors_plugin.so"/>
+    <plugin name="door_plugin" filename="libdoor_plugin.so">
+      <door_type>slide</door_type>
+      <model_domain_space>door_</model_domain_space>
+      <door_direction>right</door_direction>
+    </plugin>
+
 
   </model>
 </sdf>
