@@ -45,20 +45,13 @@ namespace gazebo
     
     int door_ref_num;
     std::string door_model_name, door_direction, model_domain_space;
-    std::string bot_pose_topics_str;
 
     ros::NodeHandle* rosNode;
     transport::NodePtr gazeboNode;
     event::ConnectionPtr updateConnection;
 
-    std::vector<ros::Subscriber> bot_pose_subs;
-    uint numBotsInContextSpace;
-
     transport::SubscriberPtr subFpvPose, subGzRequest;
     ros::Subscriber sub, sub_active;
-
-    boost::mutex cb_mutex;
-    boost::mutex::scoped_lock *lock;
 
   public:
     FlipDoor()
@@ -78,7 +71,6 @@ namespace gazebo
       establishLinks(_parent);
       determineRotationType(_sdf);
       determineModelDomain(_sdf);
-      setupBotPoseSubscribers(_sdf);
       initVars();
     }
 
@@ -116,25 +108,6 @@ namespace gazebo
       ROS_INFO("Door '%s' initialized - Direction: %s, Domain Space: %s\n", door_model_name.c_str(), door_direction.c_str(), model_domain_space.c_str());
     }
 
-    void setupBotPoseSubscribers(sdf::ElementPtr _sdf)
-    {
-      if (!_sdf->HasElement("bot_pose_topics")) {
-        ROS_ERROR("Bot Pose subscription topics not specified. Defaulting to botPose");
-        bot_pose_topics_str = "/botPose";
-      } else {
-        bot_pose_topics_str = _sdf->GetElement("bot_pose_topics")->Get<std::string>();
-      }
-
-      std::vector<std::string> bot_pose_topic_list = parseTopicStr(bot_pose_topics_str);
-
-      for (int i=0; i<bot_pose_topic_list.size(); i++) {
-        ros::Subscriber pose_sub = rosNode->subscribe<geometry_msgs::Pose>(bot_pose_topic_list.at(i), 2, &FlipDoor::bot_pose_cb, this);
-        ROS_INFO("Subscribed to bot pose topic - '%s'", pose_sub.getTopic().c_str());
-        bot_pose_subs.push_back(pose_sub);
-      }
-
-    }
-
     std::vector<std::string> parseTopicStr(std::string bot_pose_topics_str)
     {
       std::vector<std::string> bot_pose_topic_list;
@@ -160,9 +133,6 @@ namespace gazebo
       std::string door_ref_num_str = door_model_name; 
       replaceSubstring(door_ref_num_str, model_domain_space, "");
       door_ref_num = atoi(door_ref_num_str.c_str());
-
-      numBotsInContextSpace = 0;
-      lock = new boost::mutex::scoped_lock(cb_mutex);
     }
 
     void establishLinks(physics::ModelPtr _parent)
@@ -181,17 +151,9 @@ namespace gazebo
 
     void cmd_ang_cb(const geometry_msgs::Twist::ConstPtr& msg)
     {
-      ROS_ASSERT(numBotsInContextSpace >= 0);
-
-      if (isActive) {
-        
-        if (numBotsInContextSpace > 0) {
-          setAngularVel(DEFAULT_OPEN_VEL);
-        } else if (numBotsInContextSpace == 0) {
-          setAngularVel(msg->angular.z);
-          ROS_INFO("Door '%s' - Angular z: [%f]", door_model_name.c_str(), msg->angular.z);
-        }
-
+      if (isActive) {      
+        setAngularVel(msg->angular.z);
+        ROS_INFO("Door '%s' - Angular z: [%f]", door_model_name.c_str(), msg->angular.z);
       }
     }
 
@@ -219,47 +181,6 @@ namespace gazebo
         }
       }
     }
-
-    void bot_pose_cb(const geometry_msgs::Pose::ConstPtr& msg) 
-    {
-      if (isObjectInContextSpace(*msg)) {
-        // Use mutex lock to ensure race-condition doesn't affect the var 'numBotsInContextSpace'
-        // lock->lock();
-        numBotsInContextSpace++;
-        // lock->unlock();
-
-      } else {
-
-        if (numBotsInContextSpace > 0) {
-        
-          // lock->lock();
-          numBotsInContextSpace--;
-          // lock->unlock();
-        
-        }
-      }      
-
-    }
-
-    bool isObjectInContextSpace(geometry_msgs::Pose botPose)
-    {
-      math::Pose currDoorPose = this->model->GetWorldPose();
-
-      if (botPose.position.x > currDoorPose.pos.x + CONTEXT_SPACE_X_RANGE || botPose.position.x < currDoorPose.pos.x - CONTEXT_SPACE_X_RANGE) {
-        return false;
-      }
-
-      if (botPose.position.y > currDoorPose.pos.y + CONTEXT_SPACE_Y_RANGE || botPose.position.y < currDoorPose.pos.y - CONTEXT_SPACE_Y_RANGE) {
-        return false;
-      }
-
-      if (botPose.position.z > currDoorPose.pos.z + CONTEXT_SPACE_Z_RANGE || botPose.position.z < currDoorPose.pos.z - CONTEXT_SPACE_Z_RANGE) {
-        return false;
-      }
-
-      return true;
-    }
-
 
     std::string replaceSubstring(std::string &s, std::string toReplace, std::string replaceWith)
     {
