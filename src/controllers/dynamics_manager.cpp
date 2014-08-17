@@ -72,20 +72,10 @@ class DynamicsController
 
 		bool open_close_doors_cb(dynamic_models::OpenCloseDoors::Request &req, dynamic_models::OpenCloseDoors::Response &res)
 		{
-			int groupIndex = getGroupIndex(req.group_name);
-
-			if (groupIndex == INDEX_NOT_FOUND) {
-				ROS_ERROR("Open Door Service Failed: The specified group does not exist");
+			if (!activateDoors(req.group_name)) {
 				return false;
 			}
 
-			ControlGroup currGroup = groups.at(groupIndex);
-
-			// Publish the active doors in the group
-			std_msgs::UInt32MultiArray active_doors = uintVectorToStdMsgs(currGroup.getActiveUnits());
-			door_active_pub.publish(active_doors);
-
-			// Publish door vels:
 			geometry_msgs::Twist cmd_vel;
 
 			if (req.state == STATE_OPEN) {
@@ -105,6 +95,41 @@ class DynamicsController
 
 		bool set_vel_doors_cb(dynamic_models::SetVelDoors::Request &req, dynamic_models::SetVelDoors::Response &res)
 		{
+			if (!activateDoors(req.group_name)) {
+				return false;
+			}
+
+			geometry_msgs::Twist cmd_vel;
+
+			cmd_vel.linear.x = req.lin_x;
+			cmd_vel.linear.y = req.lin_y;
+			cmd_vel.angular.z = req.ang_z;
+
+			door_cmd_vel_pub.publish(cmd_vel);
+
+			return true;
+		}
+
+		bool activateDoors(std::string group_name)
+		{
+			int groupIndex = getGroupIndex(group_name);
+
+			if (groupIndex == INDEX_NOT_FOUND) {
+				ROS_ERROR("Door Service Failed: The specified group does not exist");
+				return false;
+			}
+
+			ControlGroup currGroup = groups.at(groupIndex);
+
+			if (currGroup.getType() != DOOR) {
+				ROS_ERROR("Door Service Failed: This group type doesn't support this call");
+				return false;
+			}
+
+			// Publish the IDs of the active doors in the group
+			std_msgs::UInt32MultiArray active_doors = uintVectorToStdMsgs(currGroup.getActiveUnits());
+			door_active_pub.publish(active_doors);
+
 			return true;
 		}
 
