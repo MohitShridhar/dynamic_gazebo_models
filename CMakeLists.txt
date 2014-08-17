@@ -10,7 +10,9 @@ find_package(Boost 1.40 COMPONENTS program_options REQUIRED)
 find_package(Protobuf REQUIRED)
 
 #add services:
-add_service_files(DIRECTORY srv FILES AddGroup.srv DeleteGroup.srv OpenCloseDoors.srv SetVelDoors.srv TargetFloorElevators.srv)
+add_service_files(DIRECTORY srv FILES AddGroup.srv DeleteGroup.srv OpenCloseDoors.srv SetVelDoors.srv TargetFloorElev.srv SetElevProps.srv OpenCloseElevDoors.srv ListGroups.srv)
+add_message_files(DIRECTORY msg FILES ControlGroup.msg)
+
 generate_messages(DEPENDENCIES std_msgs geometry_msgs)
 
 #add catkin sourced packages:

@@ -1,0 +1,4 @@
+# List exiting control groups handled by the manager
+
+----
+ControlGroup[] groups

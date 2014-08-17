@@ -1,0 +1,5 @@
+# Binary state control for elevator doors (current floor)
+
+string group_name
+bool state
+----

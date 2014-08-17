@@ -10,6 +10,12 @@
     <arg name="world_name" value="$(find dynamic_models)/worlds/empty.world"/>
   </include>
 
+  <!-- Model Dynamic Manager -->
+  <arg name="add_group_srv" value="/model_dynamics_manager/add_control_group"/>
+
+  <node pkg="dynamic_models" type="dynamics_manager" name="dynamics_manager" output="screen"/>
+
+
   <!-- Flip Door Left -->
 
   <param name="spawn_door_1" command="$(find xacro)/xacro.py $(find dynamic_models)/models/flip_door_right.sdf" />
@@ -37,6 +43,44 @@
 
   <node pkg="gazebo_ros" type="spawn_model" name="gazebo_door4" args="-sdf -param spawn_door_4 -model door_4 -x 3.042358 -y 8.532777 -z 0.3" respawn="false" output="screen">
   </node>
+
+
+  <!-- Add Control Groups: NOTE - This can also be configured during runtime -->
+  <node pkg="rosservice" type="rosservice" name="flip_door_group" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors',
+        type: 'door',
+        active_units: [1, 2]
+      }
+    }'
+  "/>
+
+  <node pkg="rosservice" type="rosservice" name="slide_door_group" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'SlideDoors',
+        type: 'door',
+        active_units: [3, 4]
+      }
+    }'
+  "/>
+
+  <node pkg="rosservice" type="rosservice" name="all_doors" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'AllDoors',
+        type: 'door',
+        active_units: [1, 2, 3, 4]
+      }
+    }'
+  "/>
 
 
 </launch>
