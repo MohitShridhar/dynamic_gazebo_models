@@ -1,5 +1,5 @@
 # Set the target floor for a group of elevators
 
 string group_name
-uint32 target_floor
+int32 target_floor
 ----

@@ -29,6 +29,10 @@
 #define STATE_OPEN true
 #define STATE_CLOSE false
 
+#define ELEV_DOOR_STATE_OPEN 1
+#define ELEV_DOOR_STATE_CLOSE 0
+#define ELEV_DOOR_STATE_FREE 2
+
 #define INDEX_NOT_FOUND -1
 
 
@@ -41,7 +45,7 @@ class DynamicsController
 		ros::ServiceServer open_close_doors_server, set_vel_doors_server, target_floor_elev_server, set_elev_props_server, open_close_elev_doors_server;
 		
 		ros::Publisher door_cmd_vel_pub, door_active_pub;
-		ros::Publisher elev_cmd_floor_pub, elev_active_pub, elev_param_pub, elev_door_pub;
+		ros::Publisher elev_target_pub, elev_active_pub, elev_param_pub, elev_door_pub;
 
 		std::vector<ControlGroup> groups;
 
@@ -110,6 +114,34 @@ class DynamicsController
 			return true;
 		}
 
+		bool target_floor_elev_cb(dynamic_models::TargetFloorElev::Request &req, dynamic_models::TargetFloorElev::Response &res)
+		{
+			if (!activateElevators(req.group_name)) {
+				return false;
+			}
+
+			std_msgs::UInt8 elev_door_state;
+			elev_door_state.data = ELEV_DOOR_STATE_FREE;
+
+			std_msgs::Int32 target_floor;
+			target_floor.data = req.target_floor;
+
+			elev_door_pub.publish(elev_door_state);
+			elev_target_pub.publish(target_floor);
+
+			return true;
+		}
+
+		bool set_elev_props_cb(dynamic_models::SetElevProps::Request &req, dynamic_models::SetElevProps::Response &res)
+		{
+			return true;
+		}
+
+		bool open_close_elev_cb(dynamic_models::OpenCloseElevDoors::Request &req, dynamic_models::OpenCloseElevDoors::Response &res)
+		{
+			return true;
+		}
+
 		bool activateDoors(std::string group_name)
 		{
 			int groupIndex = getGroupIndex(group_name);
@@ -133,18 +165,25 @@ class DynamicsController
 			return true;
 		}
 
-		bool target_floor_elev_cb(dynamic_models::TargetFloorElev::Request &req, dynamic_models::TargetFloorElev::Response &res)
+		bool activateElevators(std::string group_name)
 		{
-			return true;
-		}
+			int groupIndex = getGroupIndex(group_name);
 
-		bool set_elev_props_cb(dynamic_models::SetElevProps::Request &req, dynamic_models::SetElevProps::Response &res)
-		{
-			return true;
-		}
+			if (groupIndex == INDEX_NOT_FOUND) {
+				ROS_ERROR("Elevator Service Failed: The specified group does not exist");
+				return false;
+			}
 
-		bool open_close_elev_cb(dynamic_models::OpenCloseElevDoors::Request &req, dynamic_models::OpenCloseElevDoors::Response &res)
-		{
+			ControlGroup currGroup = groups.at(groupIndex);
+
+			if (currGroup.getType() != ELEVATOR) {
+				ROS_ERROR("Elevato Service Failed: This group type doesn't support this call");
+				return false;
+			}
+
+			std_msgs::UInt32MultiArray active_elevs = uintVectorToStdMsgs(currGroup.getActiveUnits());
+			elev_active_pub.publish(active_elevs);
+
 			return true;
 		}
 
@@ -153,7 +192,7 @@ class DynamicsController
 			door_cmd_vel_pub = rosNode.advertise<geometry_msgs::Twist>("/door_controller/command", 5);
 			door_active_pub = rosNode.advertise<std_msgs::UInt32MultiArray>("/door_controller/active", 5);
 
-		    elev_cmd_floor_pub = rosNode.advertise<std_msgs::Int32>("/elevator_controller/target_floor", 5);
+		    elev_target_pub = rosNode.advertise<std_msgs::Int32>("/elevator_controller/target_floor", 5);
 		    elev_active_pub = rosNode.advertise<std_msgs::UInt32MultiArray>("elevator_controller/active", 5);
 		    elev_param_pub = rosNode.advertise<std_msgs::Float32MultiArray>("elevator_controller/param", 5);
 		    elev_door_pub = rosNode.advertise<std_msgs::UInt8>("/elevator_controller/door", 5);
@@ -180,8 +219,7 @@ class DynamicsController
 				return false;
 			}
 
-			// Check if there is an exiting group with the same name, which might cause conflicts:
-			
+			// Check if there is an exiting group with the same name, which might cause conflicts:			
 			int groupIndex = getGroupIndex(req.group.group_name);
 			if (groupIndex != INDEX_NOT_FOUND) {
 				ROS_ERROR("Add Group Service Failed: The specified group name already exists");

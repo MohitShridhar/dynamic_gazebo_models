@@ -44,11 +44,18 @@
   <node pkg="gazebo_ros" type="spawn_model" name="gazebo_door4" args="-sdf -param spawn_door_4 -model door_4 -x 3.042358 -y 8.532777 -z 0.3" respawn="false" output="screen">
   </node>
 
-  <!-- Elevator -->
+  <!-- Elevator 1 -->
   <param name="spawn_elevator_1" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elevator.sdf" />
 
   <node pkg="gazebo_ros" type="spawn_model" name="gazebo_elevator1" args="-sdf -param spawn_elevator_1 -model elevator_1 -x 3.042358 -y 8.532777 -z 0.3" respawn="false" output="screen">
   </node>
+
+  <!-- Elevator 2 -->
+  <param name="spawn_elevator_2" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elevator.sdf" />
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_elevator2" args="-sdf -param spawn_elevator_2 -model elevator_2 -x 3.042358 -y 16.532777 -z 0.3" respawn="false" output="screen">
+  </node>
+
 
 
   <!-- Add Control Groups: NOTE - This can also be configured during runtime -->
@@ -84,6 +91,31 @@
         group_name: 'AllDoors',
         type: 'door',
         active_units: [1, 2, 3, 4]
+      }
+    }'
+  "/>
+
+  <!-- Elevator groups: -->
+  <node pkg="rosservice" type="rosservice" name="elevator_1" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'Elevator1',
+        type: 'elevator',
+        active_units: [1]
+      }
+    }'
+  "/>
+
+  <node pkg="rosservice" type="rosservice" name="all_elevators" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'AllElevs',
+        type: 'elevator',
+        active_units: [1, 2]
       }
     }'
   "/>
