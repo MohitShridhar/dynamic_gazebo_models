@@ -46,4 +46,6 @@ target_link_libraries(door_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boos
 add_library(elevator src/plugins/elevator_plugin.cc)
 target_link_libraries(elevator ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${PROTOBUF_LIBRARY})
 
+add_library(auto_door src/plugins/auto_elev_door_plugin.cc)
+target_link_libraries(auto_door ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${PROTOBUF_LIBRARY})
 
