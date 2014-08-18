@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <map>
+#include <math.h>
 
 #include <boost/bind.hpp>
 #include <gazebo/gazebo.hh>
@@ -16,6 +17,9 @@
 
 #define DEFAULT_LIFT_SPEED 1.5
 #define DEFAULT_LIFT_FORCE 100
+
+#define UNKNOWN_FLOOR -100
+#define HEIGHT_LEVEL_TOLERANCE 0.01
 
 namespace gazebo
 {   
@@ -35,7 +39,6 @@ namespace gazebo
       ros::Publisher estimated_floor_pub;
 
       std::string model_domain_space, floor_heights_str;
-      int floorIndex;
       uint numFloors;
 
       std::map<int, float> floorHeightMap;
@@ -72,20 +75,10 @@ namespace gazebo
 
       void OnUpdate()
       {
-
-      }
-
-      void initVars()
-      {
-        isActive = false;
-        targetFloor = 0;
-
-        std::string elev_ref_num_str = model->GetName(); 
-        replaceSubstring(elev_ref_num_str, model_domain_space, "");
-        elev_ref_num = atoi(elev_ref_num_str.c_str());
-
-        spawnPosX = bodyLink->GetWorldPose().pos.x;
-        spawnPosY = bodyLink->GetWorldPose().pos.y;
+        ros::spinOnce();
+        directElevator();
+        constrainHorizontalMovement();
+        publishEstimatedPos();
       }
 
       void detemineModelDomain(sdf::ElementPtr _sdf)
@@ -230,7 +223,88 @@ namespace gazebo
       {
         return(s.replace(s.find(toReplace), toReplace.length(), replaceWith));
       }
+      void directElevator()
+      {
+        float targetHeight = floorHeightMap[targetFloor];
+        float currentHeight = bodyLink->GetWorldCoGPose().pos.z;
+        float heightDiff = currentHeight - targetHeight;
 
+        if (heightDiff > HEIGHT_LEVEL_TOLERANCE || heightDiff < HEIGHT_LEVEL_TOLERANCE) {
+          if (heightDiff > 0.0) {
+            moveDown();
+          } else {
+            moveUp();
+          }
+        } else {
+          stopMotion();
+        }
+      }
+
+      void constrainHorizontalMovement()
+      {
+        math::Pose currPose = model->GetWorldPose();
+        float currHeight = currPose.pos.z;
+
+        math::Pose stabilizedPose;
+        stabilizedPose.rot.x = stabilizedPose.rot.y = stabilizedPose.rot.z = 0;
+        
+        stabilizedPose.pos.x = spawnPosX;
+        stabilizedPose.pos.y = spawnPosY;
+        stabilizedPose.pos.z = currHeight;     
+
+        model->SetWorldPose(stabilizedPose);
+      }
+
+      void publishEstimatedPos()
+      {
+        std_msgs::Int32 estimatedFloor;
+        estimatedFloor.data = estimateCurrFloor();
+        estimated_floor_pub.publish(estimatedFloor);
+      }
+
+      int estimateCurrFloor()
+      {
+        float currHeight = bodyLink->GetWorldCoGPose().pos.z;
+
+        for (int i=0; i<numFloors; i++) {
+          if (fabs(currHeight - floorHeightMap[i]) < HEIGHT_LEVEL_TOLERANCE) {
+            return i;
+          }
+        } 
+        
+        return UNKNOWN_FLOOR;
+      }
+
+      void moveUp()
+      {
+        bodyLink->SetForce(math::Vector3(0, 0, elevForce));
+        bodyLink->SetLinearVel(math::Vector3(0, 0, elevSpeed));
+      }
+
+      void moveDown()
+      {
+        bodyLink->SetForce(math::Vector3(0, 0, -elevForce));
+        bodyLink->SetLinearVel(math::Vector3(0, 0, -elevSpeed));
+      }
+
+      void stopMotion()
+      {
+        bodyLink->SetForce(math::Vector3(0, 0, 0));
+        bodyLink->SetLinearVel(math::Vector3(0, 0, 0));
+      }
+
+      void initVars()
+      {
+        isActive = false;
+        targetFloor = 0;
+
+        std::string elev_ref_num_str = model->GetName(); 
+        replaceSubstring(elev_ref_num_str, model_domain_space, "");
+        elev_ref_num = atoi(elev_ref_num_str.c_str());
+
+        spawnPosX = bodyLink->GetWorldPose().pos.x;
+        spawnPosY = bodyLink->GetWorldPose().pos.y;
+      }
   };
 
   GZ_REGISTER_MODEL_PLUGIN(ElevatorPlugin)
