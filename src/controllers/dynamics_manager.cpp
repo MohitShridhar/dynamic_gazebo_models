@@ -134,11 +134,35 @@ class DynamicsController
 
 		bool set_elev_props_cb(dynamic_models::SetElevProps::Request &req, dynamic_models::SetElevProps::Response &res)
 		{
+			if (!activateElevators(req.group_name)) {
+				return false;
+			}
+
+			std_msgs::Float32MultiArray elev_params;
+			elev_params.data.push_back(req.velocity);
+			elev_params.data.push_back(req.force);
+
+			elev_param_pub.publish(elev_params);
+
 			return true;
 		}
 
 		bool open_close_elev_cb(dynamic_models::OpenCloseElevDoors::Request &req, dynamic_models::OpenCloseElevDoors::Response &res)
 		{
+			if (!activateElevators(req.group_name)) {
+				return false;
+			}
+
+			std_msgs::UInt8 elev_door_state;
+
+			if (req.state == STATE_OPEN) {
+				elev_door_state.data = ELEV_DOOR_STATE_OPEN;
+			} else {
+				elev_door_state.data = ELEV_DOOR_STATE_CLOSE;
+			}
+
+			elev_door_pub.publish(elev_door_state);
+
 			return true;
 		}
 
