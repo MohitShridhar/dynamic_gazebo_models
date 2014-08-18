@@ -1,0 +1,101 @@
+<launch>
+
+
+<!-- Load Param -->
+
+  <param name="spawn_auto_door_5" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+
+  <param name="spawn_auto_door_6" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+
+  <param name="spawn_auto_door_7" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+
+  <param name="spawn_auto_door_8" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+
+  <param name="spawn_auto_door_9" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+
+  <param name="spawn_auto_door_10" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+
+  <param name="spawn_auto_door_11" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+
+  <param name="spawn_auto_door_12" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+
+  <param name="spawn_auto_door_13" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+
+  <param name="spawn_auto_door_14" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+
+  <param name="spawn_auto_door_15" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+
+  <param name="spawn_auto_door_16" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+
+  <param name="spawn_auto_door_17" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+
+  <param name="spawn_auto_door_18" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+
+  <param name="spawn_auto_door_19" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+
+  <param name="spawn_auto_door_20" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+
+  <param name="spawn_auto_door_21" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+
+  <param name="spawn_auto_door_22" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+
+  <param name="spawn_auto_door_23" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+
+  <param name="spawn_auto_door_24" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+
+  <param name="spawn_auto_door_25" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+
+  <param name="spawn_auto_door_26" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+
+
+<!-- Spawn -->
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_auto_door_5" args="-sdf -param spawn_auto_door_5 -model auto_door_F6A -x -2.984057 -y 10.433580 -z 20.6549995 -wait elevator_1" respawn="false" output="screen">
+  </node>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_auto_door_6" args="-sdf -param spawn_auto_door_6 -model auto_door_F6B -x -2.984057 -y 9.626275 -z 20.6549995 -wait elevator_1" respawn="false" output="screen">
+  </node>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_auto_door_7" args="-sdf -param spawn_auto_door_7 -model auto_door_F5A -x -2.984057 -y 10.433580 -z 17.4604595 -wait elevator_1" respawn="false" output="screen">
+  </node>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_auto_door_8" args="-sdf -param spawn_auto_door_8 -model auto_door_F5B -x -2.984057 -y 9.626275 -z 17.4604595 -wait elevator_1" respawn="false" output="screen">
+  </node>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_auto_door_9" args="-sdf -param spawn_auto_door_9 -model auto_door_F4A -x -2.984057 -y 10.433580 -z 14.2467995 -wait elevator_1" respawn="false" output="screen">
+  </node>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_auto_door_10" args="-sdf -param spawn_auto_door_10 -model auto_door_F4B -x -2.984057 -y 9.626275 -z 14.2467995 -wait elevator_1" respawn="false" output="screen">
+  </node>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_auto_door_11" args="-sdf -param spawn_auto_door_11 -model auto_door_F3A -x -2.984057 -y 10.433580 -z 11.0483095 -wait elevator_1" respawn="false" output="screen">
+  </node>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_auto_door_12" args="-sdf -param spawn_auto_door_12 -model auto_door_F3B -x -2.984057 -y 9.626275 -z 11.0483095 -wait elevator_1" respawn="false" output="screen">
+  </node>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_auto_door_13" args="-sdf -param spawn_auto_door_13 -model auto_door_F2A -x -2.984057 -y 10.433580 -z 7.8519695 -wait elevator_1" respawn="false" output="screen">
+  </node>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_auto_door_14" args="-sdf -param spawn_auto_door_14 -model auto_door_F2B -x -2.984057 -y 9.626275 -z 7.8519695 -wait elevator_1" respawn="false" output="screen">
+  </node>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_auto_door_15" args="-sdf -param spawn_auto_door_15 -model auto_door_F1A -x -2.984057 -y 10.433580 -z 4.6559195 -wait elevator_1" respawn="false" output="screen">
+  </node>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_auto_door_16" args="-sdf -param spawn_auto_door_16 -model auto_door_F1B -x -2.984057 -y 9.626275 -z 4.6559195 -wait elevator_1" respawn="false" output="screen">
+  </node>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_auto_door_17" args="-sdf -param spawn_auto_door_17 -model auto_door_F0A -x -2.984057 -y 10.433580 -z 1.8423895 -wait elevator_1" respawn="false" output="screen">
+  </node>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_auto_door_18" args="-sdf -param spawn_auto_door_18 -model auto_door_F0B -x -2.984057 -y 9.626275 -z 1.8423895 -wait elevator_1" respawn="false" output="screen">
+  </node>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_auto_door_23" args="-sdf -param spawn_auto_door_23 -model auto_door_F0E -x 0.180682 -y 10.433580 -z 1.8423895  -wait elevator_1" respawn="false" output="screen">
+  </node>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_auto_door_24" args="-sdf -param spawn_auto_door_24 -model auto_door_F0F -x 0.180682 -y 9.626275 -z 1.8423895  -wait elevator_1" respawn="false" output="screen">
+  </node>
+
+</launch>

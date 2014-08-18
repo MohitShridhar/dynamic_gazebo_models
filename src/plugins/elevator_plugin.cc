@@ -89,6 +89,8 @@ namespace gazebo
         } else {
           model_domain_space = _sdf->GetElement("model_domain_space")->Get<std::string>();
         }
+
+        rosNode->setParam("/model_dynamics_manager/elevator_domain_space", model_domain_space);
       }
 
       void loadFloorHeights(sdf::ElementPtr _sdf)
@@ -139,7 +141,12 @@ namespace gazebo
 
       void target_floor_cb(const std_msgs::Int32::ConstPtr& floorRef)
       {
-        if (isActive) {
+        if (isActive && targetFloor != floorRef->data) {
+          if (floorHeightMap.count(floorRef->data) == 0) {
+            ROS_ERROR("Elevator %d: Floor %d does not exist!", elev_ref_num, floorRef->data);
+            return;
+          }
+
           targetFloor = floorRef->data;
           ROS_INFO("Elevator %d: Target Floor - %d", elev_ref_num, targetFloor);
         }
@@ -305,6 +312,7 @@ namespace gazebo
         spawnPosX = bodyLink->GetWorldPose().pos.x;
         spawnPosY = bodyLink->GetWorldPose().pos.y;
       }
+
   };
 
   GZ_REGISTER_MODEL_PLUGIN(ElevatorPlugin)

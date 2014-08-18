@@ -68,7 +68,13 @@
       </axis>
     </joint>
 
-
+    <plugin name="auto_elev_door_plugin" filename="libauto_door.so">
+      <model_domain_space>auto_door_</model_domain_space>
+      <elevator_name>elevator_1</elevator_name>
+      <door_direction>right</door_direction>
+      <max_trans_dist>0.711305</max_trans_dist>
+      <speed>1.0</speed>
+    </plugin>
 
   </model>
 </sdf>

@@ -56,7 +56,8 @@
   <node pkg="gazebo_ros" type="spawn_model" name="gazebo_elevator2" args="-sdf -param spawn_elevator_2 -model elevator_2 -x 9.356054 -y 12.938729 -z 0.3" respawn="false" output="screen">
   </node>
 
-
+  <!-- Auto doors -->
+  <include file="$(find dynamic_models)/launch/elevator_doors.launch"/>
 
   <!-- Add Control Groups: NOTE - This can also be configured during runtime -->
   <node pkg="rosservice" type="rosservice" name="flip_door_group" args="call 
