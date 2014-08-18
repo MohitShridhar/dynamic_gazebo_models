@@ -35,6 +35,8 @@
 #define CONTEXT_SPACE_Y_RANGE 2.0
 #define CONTEXT_SPACE_Z_RANGE 2.0
 
+// TODO: Customizable Rotation and Translation limits
+
 namespace gazebo
 { 
   enum DoorType {FLIP, SLIDE};
