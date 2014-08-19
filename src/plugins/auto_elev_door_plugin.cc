@@ -144,10 +144,10 @@ namespace gazebo
 				model = _parent;
 				doorLink = model->GetLink("door");
 
-				target_floor_sub = rosNode->subscribe<std_msgs::Int32>("/elevator_controller/target_floor", 5, &AutoElevDoorPlugin::target_floor_cb, this);
-				est_floor_sub = rosNode->subscribe<std_msgs::Int32>("/elevator_controller/" + elevator_ref_name + "/estimated_current_floor", 5, &AutoElevDoorPlugin::est_floor_cb, this);
-				open_close_sub = rosNode->subscribe<std_msgs::UInt8>("/elevator_controller/door", 5, &AutoElevDoorPlugin::open_close_cb, this);
-				active_elevs_sub = rosNode->subscribe<std_msgs::UInt32MultiArray>("/elevator_controller/active", 5, &AutoElevDoorPlugin::active_elevs_cb, this);
+				target_floor_sub = rosNode->subscribe<std_msgs::Int32>("/elevator_controller/target_floor", 50, &AutoElevDoorPlugin::target_floor_cb, this);
+				est_floor_sub = rosNode->subscribe<std_msgs::Int32>("/elevator_controller/" + elevator_ref_name + "/estimated_current_floor", 50, &AutoElevDoorPlugin::est_floor_cb, this);
+				open_close_sub = rosNode->subscribe<std_msgs::UInt8>("/elevator_controller/door", 50, &AutoElevDoorPlugin::open_close_cb, this);
+				active_elevs_sub = rosNode->subscribe<std_msgs::UInt32MultiArray>("/elevator_controller/active", 50, &AutoElevDoorPlugin::active_elevs_cb, this);
 
 				updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&AutoElevDoorPlugin::OnUpdate, this));
 			}

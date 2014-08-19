@@ -131,10 +131,10 @@ namespace gazebo
 
         rosNode = new ros::NodeHandle("");
 
-        target_floor_sub = rosNode->subscribe<std_msgs::Int32>("/elevator_controller/target_floor", 1, &ElevatorPlugin::target_floor_cb, this);
-        active_elevs_sub = rosNode->subscribe<std_msgs::UInt32MultiArray>("/elevator_controller/active", 5, &ElevatorPlugin::active_elevs_cb, this);
-        set_param_sub = rosNode->subscribe<std_msgs::Float32MultiArray>("/elevator_controller/param", 5, &ElevatorPlugin::set_param_cb, this);
-        estimated_floor_pub = rosNode->advertise<std_msgs::Int32>("/elevator_controller/" + modelName + "/estimated_current_floor", 10);
+        target_floor_sub = rosNode->subscribe<std_msgs::Int32>("/elevator_controller/target_floor", 100, &ElevatorPlugin::target_floor_cb, this);
+        active_elevs_sub = rosNode->subscribe<std_msgs::UInt32MultiArray>("/elevator_controller/active", 100, &ElevatorPlugin::active_elevs_cb, this);
+        set_param_sub = rosNode->subscribe<std_msgs::Float32MultiArray>("/elevator_controller/param", 100, &ElevatorPlugin::set_param_cb, this);
+        estimated_floor_pub = rosNode->advertise<std_msgs::Int32>("/elevator_controller/" + modelName + "/estimated_current_floor", 100);
 
         updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&ElevatorPlugin::OnUpdate, this)); 
       }

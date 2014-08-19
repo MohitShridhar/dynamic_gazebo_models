@@ -38,7 +38,7 @@
 /*
 
 Limitations:
-	Topic messages are dropped sometimes while making the first service call
+	Sometimes service calls are dropped without notice. Solution: Implement 'wait for call'
 */
 
 class DynamicsController
@@ -218,13 +218,13 @@ class DynamicsController
 
 		void setupControlTopics()
 		{
-			door_cmd_vel_pub = rosNode.advertise<geometry_msgs::Twist>("/door_controller/command", 10);
-			door_active_pub = rosNode.advertise<std_msgs::UInt32MultiArray>("/door_controller/active", 10);
+			door_cmd_vel_pub = rosNode.advertise<geometry_msgs::Twist>("/door_controller/command", 100);
+			door_active_pub = rosNode.advertise<std_msgs::UInt32MultiArray>("/door_controller/active", 1000);
 
-		    elev_target_pub = rosNode.advertise<std_msgs::Int32>("/elevator_controller/target_floor", 10);
-		    elev_active_pub = rosNode.advertise<std_msgs::UInt32MultiArray>("elevator_controller/active", 10);
-		    elev_param_pub = rosNode.advertise<std_msgs::Float32MultiArray>("elevator_controller/param", 10);
-		    elev_door_pub = rosNode.advertise<std_msgs::UInt8>("/elevator_controller/door", 10);
+		    elev_target_pub = rosNode.advertise<std_msgs::Int32>("/elevator_controller/target_floor", 100);
+		    elev_active_pub = rosNode.advertise<std_msgs::UInt32MultiArray>("elevator_controller/active", 1000);
+		    elev_param_pub = rosNode.advertise<std_msgs::Float32MultiArray>("elevator_controller/param", 1000);
+		    elev_door_pub = rosNode.advertise<std_msgs::UInt8>("/elevator_controller/door", 100);
 		}
 
 		std_msgs::UInt32MultiArray uintVectorToStdMsgs(std::vector<uint32_t> active_units)

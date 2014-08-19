@@ -40,8 +40,7 @@ class KeyboardOp
 		dynamic_models::TargetFloorElev targetFloorCall;
 		dynamic_models::OpenCloseElevDoors openElevDoorsCall;
 		dynamic_models::OpenCloseElevDoors closeElevDoorsCall;
-		dynamic_models::SetElevProps setElevSpeedCall;
-		dynamic_models::SetElevProps setElevForceCall;
+		dynamic_models::SetElevProps setElevPropsCall;
 
 	public:
 		KeyboardOp(ros::NodeHandle &nh)
@@ -111,7 +110,23 @@ class KeyboardOp
 			addSrv.request.group.active_units = activeList;
 			add_group_client.call(addSrv);
 
+			type == DOOR ? printDoorControls() : printElevatorControls();
+
 			isGroupInitialized = true;
+		}
+
+		void printDoorControls()
+		{
+		    std::cout << "\n-----------------\nDoor Controls:\nPress 'Enter' after each input.\n'q' to quit.\n'o' to open doors\n'c' to close doors";
+		    std::cout << "\n'l' and 'value' to specify the linear velocity of a sliding door in m/s (eg 'l 10' or 'l-3.1')\n'a' and 'value' to specify angular velocity of a revolving door in radians (eg: 'a -1.57' or 'a3.14')";
+		    std::cout << "\n'0' to stop movement\n-----------------\n" << std::endl;
+		}
+
+		void printElevatorControls()
+		{
+			std::cout << "\n-----------------\nElevator Controls:";
+			std::cout << "\nPress 'Enter' after each input.\n'q' to quit.\nEg: '4' goes to the fourth floor";
+			std::cout << "\n's##' to set the lift speed (eg: s4.2 for 4.2 m/s). Default: 1.5m/s\n'f##' to set the lift force (eg: f150 for 150N). Default: 150N\n'o' to force open the doors on the current floor\n'c' to force close the doors on the current floor\nDefault floor: 'F0'\n-----------------\n" << std::endl;
 		}
 
 	    std::vector<uint32_t> parseActiveList(char input[])
@@ -178,13 +193,9 @@ class KeyboardOp
 			closeElevDoorsCall.request.group_name = CONTROL_GROUP_NAME;
 			closeElevDoorsCall.request.state = false;
 
-			setElevSpeedCall.request.group_name = CONTROL_GROUP_NAME;
-			setElevSpeedCall.request.velocity = DEFAULT_ELEV_SPEED;
-			setElevSpeedCall.request.force = DEFAULT_ELEV_FORCE;
-
-			setElevForceCall.request.group_name = CONTROL_GROUP_NAME;
-			setElevForceCall.request.velocity = DEFAULT_ELEV_SPEED;
-			setElevForceCall.request.force = DEFAULT_ELEV_FORCE;
+			setElevPropsCall.request.group_name = CONTROL_GROUP_NAME;
+			setElevPropsCall.request.velocity = DEFAULT_ELEV_SPEED;
+			setElevPropsCall.request.force = DEFAULT_ELEV_FORCE;
 		}
 
 		void readLineInput(char input[30])
@@ -230,7 +241,31 @@ class KeyboardOp
 
 		void executeElevatorServices(char input[])
 		{
+			std::string inputStr(input);
 
+			switch(input[0]) {
+				case 'o':
+					open_close_elev_doors_client.call(openElevDoorsCall);
+					break;
+				case 'c':
+					open_close_elev_doors_client.call(closeElevDoorsCall);
+					break;
+				case 's':
+					setElevPropsCall.request.velocity = parseFloat(inputStr.substr(1));
+					set_elev_props_client.call(setElevPropsCall);
+					break;
+				case 'f':
+					setElevPropsCall.request.force = parseFloat(inputStr.substr(1));
+					set_elev_props_client.call(setElevPropsCall);
+					break;
+				default:
+					try {
+						targetFloorCall.request.target_floor = std::stoi(inputStr);
+						target_floor_elev_client.call(targetFloorCall);
+					} catch(std::exception const & e) {
+						std::cout << "Unknown command" << std::endl;
+					}
+			};
 		}
 
 		void executeDoorServices(char input[])
@@ -254,8 +289,7 @@ class KeyboardOp
 					set_vel_doors_client.call(setVelDoorsCall);
 					break;
 				default:
-					std::cout << "Unknown command" << std::endl;			
-
+					std::cout << "Unknown command" << std::endl;
 			};
 		}
 
