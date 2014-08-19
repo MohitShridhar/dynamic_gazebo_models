@@ -15,6 +15,12 @@
 
 #define CONTROL_GROUP_NAME "keyboard_op_control_group"
 
+#define DEFAULT_ELEV_SPEED 1.5
+#define DEFAULT_ELEV_FORCE 100
+
+#define DEFAULT_SLIDE_SPEED 1.0
+#define DEFAULT_FLIP_SPEED 1.57
+
 enum ControlType {DOOR, ELEVATOR};
 
 class KeyboardOp
@@ -29,6 +35,13 @@ class KeyboardOp
 		bool isGroupInitialized;
 
 		dynamic_models::OpenCloseDoors openDoorsCall;
+		dynamic_models::OpenCloseDoors closeDoorsCall;
+		dynamic_models::SetVelDoors setVelDoorsCall;
+		dynamic_models::TargetFloorElev targetFloorCall;
+		dynamic_models::OpenCloseElevDoors openElevDoorsCall;
+		dynamic_models::OpenCloseElevDoors closeElevDoorsCall;
+		dynamic_models::SetElevProps setElevSpeedCall;
+		dynamic_models::SetElevProps setElevForceCall;
 
 	public:
 		KeyboardOp(ros::NodeHandle &nh)
@@ -138,14 +151,40 @@ class KeyboardOp
 				readLineInput(input);
 			}
 
-			setupCallTemplates();	
+			setupCallTemplates();
 		}
 
 		void setupCallTemplates()
 		{
+			// DOOR based services:
 			openDoorsCall.request.group_name = CONTROL_GROUP_NAME;
 			openDoorsCall.request.state = true;
 
+			closeDoorsCall.request.group_name = CONTROL_GROUP_NAME;
+			closeDoorsCall.request.state = false;
+
+			setVelDoorsCall.request.group_name = CONTROL_GROUP_NAME;
+			setVelDoorsCall.request.lin_x = DEFAULT_SLIDE_SPEED;
+			setVelDoorsCall.request.lin_y = DEFAULT_SLIDE_SPEED;
+			setVelDoorsCall.request.ang_z = DEFAULT_FLIP_SPEED;
+
+			// ELEVATOR based services:
+			targetFloorCall.request.group_name = CONTROL_GROUP_NAME;
+			targetFloorCall.request.target_floor = 0;
+
+			openElevDoorsCall.request.group_name = CONTROL_GROUP_NAME;
+			openElevDoorsCall.request.state = true;
+
+			closeElevDoorsCall.request.group_name = CONTROL_GROUP_NAME;
+			closeElevDoorsCall.request.state = false;
+
+			setElevSpeedCall.request.group_name = CONTROL_GROUP_NAME;
+			setElevSpeedCall.request.velocity = DEFAULT_ELEV_SPEED;
+			setElevSpeedCall.request.force = DEFAULT_ELEV_FORCE;
+
+			setElevForceCall.request.group_name = CONTROL_GROUP_NAME;
+			setElevForceCall.request.velocity = DEFAULT_ELEV_SPEED;
+			setElevForceCall.request.force = DEFAULT_ELEV_FORCE;
 		}
 
 		void readLineInput(char input[30])
@@ -196,13 +235,36 @@ class KeyboardOp
 
 		void executeDoorServices(char input[])
 		{
+			std::string inputStr(input);
+
 			switch(input[0]) {
 
 				case 'o':
 					open_close_doors_client.call(openDoorsCall);
-					break;				
+					break;
+				case 'c':
+					open_close_doors_client.call(closeDoorsCall);
+					break;
+				case 'l':
+					setVelDoorsCall.request.lin_x = setVelDoorsCall.request.lin_y = parseFloat(inputStr.substr(1));
+					set_vel_doors_client.call(setVelDoorsCall);
+					break;
+				case 'a':
+					setVelDoorsCall.request.ang_z = parseFloat(inputStr.substr(1));
+					set_vel_doors_client.call(setVelDoorsCall);
+					break;
+				default:
+					std::cout << "Unknown command" << std::endl;			
 
-			}
+			};
+		}
+
+		float parseFloat(std::string input)
+		{
+		    std::string::iterator end_pos = std::remove(input.begin(), input.end(), ' ');
+		    input.erase(end_pos, input.end()); 
+
+		    return atof(input.c_str());	
 		}
 };
 
