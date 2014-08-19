@@ -40,7 +40,7 @@ add_executable(dynamics_manager src/controllers/dynamics_manager.cpp src/control
 target_link_libraries(dynamics_manager ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${PROTOBUF_LIBRARY})
 
 add_executable(keyboard_op src/controllers/keyboard_op.cpp)
-target_link_libraries(keyboard_op ${catkin_LIBRARIES})
+target_link_libraries(keyboard_op ${catkin_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY})
 
 #Plugin Libraries:
 add_library(door_plugin src/plugins/door_plugin.cc)

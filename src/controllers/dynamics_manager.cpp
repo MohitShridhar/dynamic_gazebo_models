@@ -266,7 +266,7 @@ class DynamicsController
 			int groupIndex = getGroupIndex(req.group_name);
 
 			if (groupIndex == INDEX_NOT_FOUND) {
-				ROS_ERROR("Delete Group Service Failed: The specified group does not exist");
+				ROS_WARN("Delete Group Service: The specified group does not exist");
 				return false;
 			}
 
