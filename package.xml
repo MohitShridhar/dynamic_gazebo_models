@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>dynamic_models</name>
+  <name>dynamic_gazebo_models</name>
   <version>0.0.0</version>
   <description>The dynamic_models package</description>
 

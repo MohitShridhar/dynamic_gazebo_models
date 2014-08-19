@@ -10,15 +10,15 @@
 
 #include "control_group.h"
 
-#include <dynamic_models/ControlGroup.h>
-#include <dynamic_models/AddGroup.h>
-#include <dynamic_models/DeleteGroup.h>
-#include <dynamic_models/ListGroups.h>
-#include <dynamic_models/OpenCloseDoors.h>
-#include <dynamic_models/OpenCloseElevDoors.h>
-#include <dynamic_models/SetElevProps.h>
-#include <dynamic_models/SetVelDoors.h>
-#include <dynamic_models/TargetFloorElev.h>
+#include <dynamic_gazebo_models/ControlGroup.h>
+#include <dynamic_gazebo_models/AddGroup.h>
+#include <dynamic_gazebo_models/DeleteGroup.h>
+#include <dynamic_gazebo_models/ListGroups.h>
+#include <dynamic_gazebo_models/OpenCloseDoors.h>
+#include <dynamic_gazebo_models/OpenCloseElevDoors.h>
+#include <dynamic_gazebo_models/SetElevProps.h>
+#include <dynamic_gazebo_models/SetVelDoors.h>
+#include <dynamic_gazebo_models/TargetFloorElev.h>
 
 #define TYPE_DOOR_STR "door"
 #define TYPE_ELEVATOR_STR "elevator"
@@ -79,7 +79,7 @@ class DynamicsController
 			open_close_elev_doors_server = rosNode.advertiseService("model_dynamics_manager/elevators/open_close_elev", &DynamicsController::open_close_elev_cb, this);		
 		}
 
-		bool open_close_doors_cb(dynamic_models::OpenCloseDoors::Request &req, dynamic_models::OpenCloseDoors::Response &res)
+		bool open_close_doors_cb(dynamic_gazebo_models::OpenCloseDoors::Request &req, dynamic_gazebo_models::OpenCloseDoors::Response &res)
 		{
 			if (!activateDoors(req.group_name)) {
 				return false;
@@ -102,7 +102,7 @@ class DynamicsController
 			return true;
 		}
 
-		bool set_vel_doors_cb(dynamic_models::SetVelDoors::Request &req, dynamic_models::SetVelDoors::Response &res)
+		bool set_vel_doors_cb(dynamic_gazebo_models::SetVelDoors::Request &req, dynamic_gazebo_models::SetVelDoors::Response &res)
 		{
 			if (!activateDoors(req.group_name)) {
 				return false;
@@ -119,7 +119,7 @@ class DynamicsController
 			return true;
 		}
 
-		bool target_floor_elev_cb(dynamic_models::TargetFloorElev::Request &req, dynamic_models::TargetFloorElev::Response &res)
+		bool target_floor_elev_cb(dynamic_gazebo_models::TargetFloorElev::Request &req, dynamic_gazebo_models::TargetFloorElev::Response &res)
 		{
 			if (!activateElevators(req.group_name)) {
 				return false;
@@ -137,7 +137,7 @@ class DynamicsController
 			return true;
 		}
 
-		bool set_elev_props_cb(dynamic_models::SetElevProps::Request &req, dynamic_models::SetElevProps::Response &res)
+		bool set_elev_props_cb(dynamic_gazebo_models::SetElevProps::Request &req, dynamic_gazebo_models::SetElevProps::Response &res)
 		{
 			if (!activateElevators(req.group_name)) {
 				return false;
@@ -152,7 +152,7 @@ class DynamicsController
 			return true;
 		}
 
-		bool open_close_elev_cb(dynamic_models::OpenCloseElevDoors::Request &req, dynamic_models::OpenCloseElevDoors::Response &res)
+		bool open_close_elev_cb(dynamic_gazebo_models::OpenCloseElevDoors::Request &req, dynamic_gazebo_models::OpenCloseElevDoors::Response &res)
 		{
 			if (!activateElevators(req.group_name)) {
 				return false;
@@ -239,7 +239,7 @@ class DynamicsController
 			return active_list;
 		}
 
-		bool add_control_group_cb(dynamic_models::AddGroup::Request &req, dynamic_models::AddGroup::Response &res)
+		bool add_control_group_cb(dynamic_gazebo_models::AddGroup::Request &req, dynamic_gazebo_models::AddGroup::Response &res)
 		{	
 			GroupType type = parseGroupType(req.group.type);
 
@@ -261,7 +261,7 @@ class DynamicsController
 			return true;
 		}
 
-		bool delete_control_group_cb(dynamic_models::DeleteGroup::Request &req, dynamic_models::DeleteGroup::Response &res)
+		bool delete_control_group_cb(dynamic_gazebo_models::DeleteGroup::Request &req, dynamic_gazebo_models::DeleteGroup::Response &res)
 		{
 			int groupIndex = getGroupIndex(req.group_name);
 
@@ -275,10 +275,10 @@ class DynamicsController
 			return true;
 		}
 
-		bool list_groups_cb(dynamic_models::ListGroups::Request &req, dynamic_models::ListGroups::Response &res)
+		bool list_groups_cb(dynamic_gazebo_models::ListGroups::Request &req, dynamic_gazebo_models::ListGroups::Response &res)
 		{
 			for (int i=0; i<groups.size(); i++) {
-				dynamic_models::ControlGroup item;
+				dynamic_gazebo_models::ControlGroup item;
 
 				item.group_name = groups.at(i).getGroupName();
 				item.type = groups.at(i).getType();

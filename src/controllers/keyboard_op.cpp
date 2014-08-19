@@ -3,15 +3,15 @@
 
 #include <ros/ros.h>
 
-#include <dynamic_models/ControlGroup.h>
-#include <dynamic_models/AddGroup.h>
-#include <dynamic_models/DeleteGroup.h>
-#include <dynamic_models/ListGroups.h>
-#include <dynamic_models/OpenCloseDoors.h>
-#include <dynamic_models/OpenCloseElevDoors.h>
-#include <dynamic_models/SetElevProps.h>
-#include <dynamic_models/SetVelDoors.h>
-#include <dynamic_models/TargetFloorElev.h>
+#include <dynamic_gazebo_models/ControlGroup.h>
+#include <dynamic_gazebo_models/AddGroup.h>
+#include <dynamic_gazebo_models/DeleteGroup.h>
+#include <dynamic_gazebo_models/ListGroups.h>
+#include <dynamic_gazebo_models/OpenCloseDoors.h>
+#include <dynamic_gazebo_models/OpenCloseElevDoors.h>
+#include <dynamic_gazebo_models/SetElevProps.h>
+#include <dynamic_gazebo_models/SetVelDoors.h>
+#include <dynamic_gazebo_models/TargetFloorElev.h>
 
 #define CONTROL_GROUP_NAME "keyboard_op_control_group"
 
@@ -34,13 +34,13 @@ class KeyboardOp
 		std::string groupName;
 		bool isGroupInitialized;
 
-		dynamic_models::OpenCloseDoors openDoorsCall;
-		dynamic_models::OpenCloseDoors closeDoorsCall;
-		dynamic_models::SetVelDoors setVelDoorsCall;
-		dynamic_models::TargetFloorElev targetFloorCall;
-		dynamic_models::OpenCloseElevDoors openElevDoorsCall;
-		dynamic_models::OpenCloseElevDoors closeElevDoorsCall;
-		dynamic_models::SetElevProps setElevPropsCall;
+		dynamic_gazebo_models::OpenCloseDoors openDoorsCall;
+		dynamic_gazebo_models::OpenCloseDoors closeDoorsCall;
+		dynamic_gazebo_models::SetVelDoors setVelDoorsCall;
+		dynamic_gazebo_models::TargetFloorElev targetFloorCall;
+		dynamic_gazebo_models::OpenCloseElevDoors openElevDoorsCall;
+		dynamic_gazebo_models::OpenCloseElevDoors closeElevDoorsCall;
+		dynamic_gazebo_models::SetElevProps setElevPropsCall;
 
 	public:
 		KeyboardOp(ros::NodeHandle &nh)
@@ -59,16 +59,16 @@ class KeyboardOp
 
 		void setupClientServices()
 		{
-			add_group_client = rosNode.serviceClient<dynamic_models::AddGroup>("model_dynamics_manager/add_control_group");
-			delete_group_client = rosNode.serviceClient<dynamic_models::DeleteGroup>("model_dynamics_manager/delete_control_group");
-			list_groups_client = rosNode.serviceClient<dynamic_models::ListGroups>("model_dynamics_manager/list_groups");
+			add_group_client = rosNode.serviceClient<dynamic_gazebo_models::AddGroup>("model_dynamics_manager/add_control_group");
+			delete_group_client = rosNode.serviceClient<dynamic_gazebo_models::DeleteGroup>("model_dynamics_manager/delete_control_group");
+			list_groups_client = rosNode.serviceClient<dynamic_gazebo_models::ListGroups>("model_dynamics_manager/list_groups");
 
-			open_close_doors_client = rosNode.serviceClient<dynamic_models::OpenCloseDoors>("model_dynamics_manager/doors/open_close");
-			set_vel_doors_client = rosNode.serviceClient<dynamic_models::SetVelDoors>("model_dynamics_manager/doors/set_vel");
+			open_close_doors_client = rosNode.serviceClient<dynamic_gazebo_models::OpenCloseDoors>("model_dynamics_manager/doors/open_close");
+			set_vel_doors_client = rosNode.serviceClient<dynamic_gazebo_models::SetVelDoors>("model_dynamics_manager/doors/set_vel");
 
-			target_floor_elev_client = rosNode.serviceClient<dynamic_models::TargetFloorElev>("model_dynamics_manager/elevators/target_floor");
-			set_elev_props_client = rosNode.serviceClient<dynamic_models::SetElevProps>("model_dynamics_manager/elevators/set_props");
-			open_close_elev_doors_client = rosNode.serviceClient<dynamic_models::OpenCloseElevDoors>("model_dynamics_manager/elevators/open_close_elev");	
+			target_floor_elev_client = rosNode.serviceClient<dynamic_gazebo_models::TargetFloorElev>("model_dynamics_manager/elevators/target_floor");
+			set_elev_props_client = rosNode.serviceClient<dynamic_gazebo_models::SetElevProps>("model_dynamics_manager/elevators/set_props");
+			open_close_elev_doors_client = rosNode.serviceClient<dynamic_gazebo_models::OpenCloseElevDoors>("model_dynamics_manager/elevators/open_close_elev");	
 		}
 
 		bool setControlType(char input[])
@@ -99,12 +99,12 @@ class KeyboardOp
 			std::vector<uint32_t> activeList = parseActiveList(input);
 			
 			// Delete previous group if already initialized. Note: IGNORE the warning produced during initialization about delete service failing
-			dynamic_models::DeleteGroup deleteSrv;
+			dynamic_gazebo_models::DeleteGroup deleteSrv;
 			deleteSrv.request.group_name = CONTROL_GROUP_NAME;
 			delete_group_client.call(deleteSrv);
 
 			// Add new group with the desired units
-			dynamic_models::AddGroup addSrv;
+			dynamic_gazebo_models::AddGroup addSrv;
 			addSrv.request.group.group_name = CONTROL_GROUP_NAME;
 			addSrv.request.group.type = type == DOOR ? "door" : "elevator";
 			addSrv.request.group.active_units = activeList;
