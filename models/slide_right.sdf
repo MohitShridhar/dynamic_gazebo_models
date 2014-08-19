@@ -39,7 +39,7 @@
         </geometry>
         <material>
           <script>
-            <name>Gazebo/Yellow</name>
+            <name>Gazebo/Green</name>
             <uri>__default__</uri>
           </script>
         </material>

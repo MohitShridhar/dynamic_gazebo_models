@@ -35,6 +35,11 @@
 
 #define INDEX_NOT_FOUND -1
 
+/*
+
+Limitations:
+	Topic messages are dropped sometimes while making the first service call
+*/
 
 class DynamicsController
 {

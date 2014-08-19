@@ -34,14 +34,14 @@
 
   <param name="spawn_door_3" command="$(find xacro)/xacro.py $(find dynamic_models)/models/slide_right.sdf" />
 
-  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_door3" args="-sdf -param spawn_door_3 -model door_3 -x 3.042358 -y 5.532777 -z 0.3" respawn="false" output="screen">
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_door3" args="-sdf -param spawn_door_3 -model door_3 -x -5.728697 -y -13.045468 -z 0.3" respawn="false" output="screen">
   </node>
 
   <!-- Slide Door Left -->
 
   <param name="spawn_door_4" command="$(find xacro)/xacro.py $(find dynamic_models)/models/slide_left.sdf" />
 
-  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_door4" args="-sdf -param spawn_door_4 -model door_4 -x 3.042358 -y 8.532777 -z 0.3" respawn="false" output="screen">
+  <node pkg="gazebo_ros" type="spawn_model" name="gazebo_door4" args="-sdf -param spawn_door_4 -model door_4 -x -5.728697 -y -12.232026 -z 0.3" respawn="false" output="screen">
   </node>
 
   <!-- Elevator 1 -->
@@ -56,7 +56,7 @@
   <node pkg="gazebo_ros" type="spawn_model" name="gazebo_elevator2" args="-sdf -param spawn_elevator_2 -model elevator_2 -x 9.356054 -y 12.938729 -z 0.3" respawn="false" output="screen">
   </node>
 
-  <!-- Auto doors -->
+  <!-- Auto Elevator doors -->
   <include file="$(find dynamic_models)/launch/elevator_doors.launch"/>
 
   <!-- Add Control Groups: NOTE - This can also be configured during runtime -->
