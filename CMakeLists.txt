@@ -39,6 +39,9 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 add_executable(dynamics_manager src/controllers/dynamics_manager.cpp src/controllers/control_group.h)
 target_link_libraries(dynamics_manager ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${PROTOBUF_LIBRARY})
 
+add_executable(keyboard_op src/controllers/keyboard_op.cpp)
+target_link_libraries(keyboard_op ${catkin_LIBRARIES})
+
 #Plugin Libraries:
 add_library(door_plugin src/plugins/door_plugin.cc)
 target_link_libraries(door_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${PROTOBUF_LIBRARY})
