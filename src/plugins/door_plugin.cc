@@ -21,6 +21,7 @@
 
 #define DEFAULT_OPEN_VEL -1.57
 #define DEFAULT_CLOSE_VEL 1.57
+#define DEFAULT_SLIDE_DISTANCE 0.711305
 
 #define TYPE_FLIP_OPEN "flip"
 #define TYPE_SLIDE_OPEN "slide"
@@ -30,12 +31,10 @@
 #define DIRECTION_SLIDE_LEFT "left"
 #define DIRECTION_SLIDE_RIGHT "right"
 
-
 #define CONTEXT_SPACE_X_RANGE 2.0 // in m
 #define CONTEXT_SPACE_Y_RANGE 2.0
 #define CONTEXT_SPACE_Z_RANGE 2.0
 
-// TODO: Customizable Rotation and Translation limits
 
 namespace gazebo
 { 
@@ -57,6 +56,7 @@ namespace gazebo
     
     int door_ref_num;
     std::string door_type, door_model_name, door_direction, model_domain_space;
+    float max_trans_dist, maxPosX, maxPosY, minPosX, minPosY;
 
     ros::NodeHandle* rosNode;
     transport::NodePtr gazeboNode;
@@ -84,6 +84,7 @@ namespace gazebo
       determineDoorType(_sdf);
       determineDoorDirection(_sdf);
       determineModelDomain(_sdf);
+      determineConstraints(_sdf);
       initVars();
     }
 
@@ -91,6 +92,7 @@ namespace gazebo
     {
       ros::spinOnce();
       updateLinkVel();
+      applyConstraints();
     }
 
   private:
@@ -126,6 +128,18 @@ namespace gazebo
       }
     }
 
+    void determineConstraints(sdf::ElementPtr _sdf)
+    {
+      if (type == SLIDE) {
+        if (!_sdf->HasElement("max_trans_dist")) {
+          ROS_WARN("Max Translation Distance for sliding door not specified in the plugin reference. Defaulting to '0.711305' m");
+          max_trans_dist = DEFAULT_SLIDE_DISTANCE;
+        } else {
+          max_trans_dist = _sdf->GetElement("max_trans_dist")->Get<float>();
+        }
+      }
+    }
+
     void checkDirectionValidity()
     {
       if (type == FLIP) {
@@ -157,9 +171,21 @@ namespace gazebo
     {
       isActive = false;
 
+      // find the elevator reference number
       std::string door_ref_num_str = door_model_name; 
       replaceSubstring(door_ref_num_str, model_domain_space, "");
       door_ref_num = atoi(door_ref_num_str.c_str());
+
+      if (type == SLIDE) {
+        // compute slide constraints
+        float spawnPosX = model->GetWorldPose().pos.x;
+        minPosX = door_direction.compare(DIRECTION_SLIDE_RIGHT) == 0 ? spawnPosX - max_trans_dist : spawnPosX;
+        maxPosX = door_direction.compare(DIRECTION_SLIDE_RIGHT) == 0 ? spawnPosX : spawnPosX + max_trans_dist;
+
+        float spawnPosY = model->GetWorldPose().pos.y;
+        minPosY = door_direction.compare(DIRECTION_SLIDE_RIGHT) == 0 ? spawnPosY - max_trans_dist : spawnPosY;
+        maxPosY = door_direction.compare(DIRECTION_SLIDE_RIGHT) == 0 ? spawnPosY : spawnPosY + max_trans_dist;
+      }
     }
 
     void establishLinks(physics::ModelPtr _parent)
@@ -195,6 +221,39 @@ namespace gazebo
         doorLink->SetAngularVel(cmd_vel);
       } else if (type == SLIDE) {
         doorLink->SetLinearVel(cmd_vel);
+      }
+    }
+
+    void applyConstraints()
+    {
+      if (type == SLIDE) {
+        float currDoorPosX = model->GetWorldPose().pos.x;
+        float currDoorPosY = model->GetWorldPose().pos.y;
+
+        math::Pose constrainedPose;
+
+        if (currDoorPosX > maxPosX) {
+          constrainedPose.pos.x = maxPosX;
+        } else if (currDoorPosX < minPosX) {
+          constrainedPose.pos.x = minPosX;
+        } else {
+          constrainedPose.pos.x = currDoorPosX;
+        }
+
+        if (currDoorPosY > maxPosY) {
+          constrainedPose.pos.y = maxPosY;
+        } else if (currDoorPosY < minPosY) {
+          constrainedPose.pos.y = minPosY;
+        } else {
+          constrainedPose.pos.y = currDoorPosY;
+        }
+
+          constrainedPose.pos.z = model->GetWorldPose().pos.z;
+          constrainedPose.rot.x = model->GetWorldPose().rot.x;
+          constrainedPose.rot.y = model->GetWorldPose().rot.y;
+          constrainedPose.rot.z = model->GetWorldPose().rot.z;
+
+        model->SetWorldPose(constrainedPose);
       }
     }
 

@@ -72,6 +72,7 @@
       <door_type>slide</door_type>
       <model_domain_space>door_</model_domain_space>
       <door_direction>left</door_direction>
+      <max_trans_dist>0.711305</max_trans_dist>
     </plugin>
 
   </model>

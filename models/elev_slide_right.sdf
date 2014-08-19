@@ -48,7 +48,7 @@
       <velocity_decay>
         <linear>0</linear>
         <angular>0</angular>
-      </velocity_decay>
+      </velocity_decay>2
       <self_collide>0</self_collide>
     </link>
     <joint name='grounding_joint' type='prismatic'>
