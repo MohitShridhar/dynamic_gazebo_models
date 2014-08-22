@@ -1,14 +1,15 @@
 Dynamic Gazebo Models
 ==============
 
-Gazebo models for simulating doors/elevators in robotics applications. Currently available models: flip-open doors, slide-open doors, elevators with automatic slide-open doors (more coming soon). Plus, the bundle also comes with a generic dynamics-manager to control model groups through ROS service-calls or keyboard-op.
+Gazebo models for simulating doors/elevators. Currently available models: flip-open doors, slide-open doors, elevators with automatic slide-open doors (more coming soon). Plus, the bundle also comes with a generic dynamics-manager to control model groups through ROS service-calls or keyboard-op.
 
 ## Architecture
 
-The dynamic properties of a model, e.g.:linear & angular velocities, are controlled via topics. These topics are wrapped with a layer of custom services to process commands such as 'open-close state' for flip-open doors  or 'target floor' for elevators.
+The dynamic properties of a model, e.g.:linear & angular velocities, are controlled via topics. These topics are wrapped with a layer of custom services to process commands such as 'open-close' for flip-open doors  or 'target floor' for elevators.
 
 ## Dependencies & Prerequisites
-[ROS Hydro](http://wiki.ros.org/hydro), [Gazebo 3.0+](http://gazebosim.org/), [Catkin](http://wiki.ros.org/catkin)
+[ROS Hydro](http://wiki.ros.org/hydro), [Gazebo 3.0+](http://gazebosim.org/), 
+[Catkin](http://wiki.ros.org/catkin): see [package.xml](package.xml)
 
 ## Installation
 Clone and catkin_make
@@ -34,7 +35,7 @@ Follow the instructions to control a group of doors | elevators.
 ### Service Calls
 Include `dynamics_manager` node in your launch file (where you spawn your doors and elevators):
 ```xml
-  <node pkg="dynamic_gazebo_models" type="dynamics_manager" name="dynamics_manager" output="screen"/>
+<node pkg="dynamic_gazebo_models" type="dynamics_manager" name="dynamics_manager" output="screen"/>
 ```
 
 List of available services:
@@ -90,12 +91,12 @@ Add Group (**cpp**):
     add_group_client.call(addSrv);
 ...
 ```
-Once you have setup your groups, you can use other services such as `/model_dynamics_manager/doors/open_close` to control the dynamics of the model:
+Once you have setup your groups, you can use other services such as `/model_dynamics_manager/doors/open_close` in a similar fashion to control the dynamics of the model:
 ```bash
 rosservice call /model_dynamics_manager/doors/open_close "group_name: 'New_group_of_doors'
 state: true"
 ```
-This will open doors 1, 3 & 4.
+To open doors 1, 3 & 4 simultaneously.
 
 
 
