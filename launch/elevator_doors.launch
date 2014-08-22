@@ -3,49 +3,49 @@
 
 <!-- Load Param -->
 
-  <param name="spawn_auto_door_5" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+  <param name="spawn_auto_door_5" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_left.sdf" /> 
 
-  <param name="spawn_auto_door_6" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+  <param name="spawn_auto_door_6" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_right.sdf" /> 
 
-  <param name="spawn_auto_door_7" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+  <param name="spawn_auto_door_7" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_left.sdf" /> 
 
-  <param name="spawn_auto_door_8" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+  <param name="spawn_auto_door_8" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_right.sdf" /> 
 
-  <param name="spawn_auto_door_9" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+  <param name="spawn_auto_door_9" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_left.sdf" /> 
 
-  <param name="spawn_auto_door_10" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+  <param name="spawn_auto_door_10" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_right.sdf" /> 
 
-  <param name="spawn_auto_door_11" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+  <param name="spawn_auto_door_11" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_left.sdf" /> 
 
-  <param name="spawn_auto_door_12" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+  <param name="spawn_auto_door_12" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_right.sdf" /> 
 
-  <param name="spawn_auto_door_13" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+  <param name="spawn_auto_door_13" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_left.sdf" /> 
 
-  <param name="spawn_auto_door_14" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+  <param name="spawn_auto_door_14" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_right.sdf" /> 
 
-  <param name="spawn_auto_door_15" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+  <param name="spawn_auto_door_15" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_left.sdf" /> 
 
-  <param name="spawn_auto_door_16" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+  <param name="spawn_auto_door_16" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_right.sdf" /> 
 
-  <param name="spawn_auto_door_17" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+  <param name="spawn_auto_door_17" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_left.sdf" /> 
 
-  <param name="spawn_auto_door_18" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+  <param name="spawn_auto_door_18" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_right.sdf" /> 
 
-  <param name="spawn_auto_door_19" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+  <param name="spawn_auto_door_19" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_left.sdf" /> 
 
-  <param name="spawn_auto_door_20" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+  <param name="spawn_auto_door_20" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_right.sdf" /> 
 
-  <param name="spawn_auto_door_21" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+  <param name="spawn_auto_door_21" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_left.sdf" /> 
 
-  <param name="spawn_auto_door_22" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+  <param name="spawn_auto_door_22" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_right.sdf" /> 
 
-  <param name="spawn_auto_door_23" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+  <param name="spawn_auto_door_23" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_left.sdf" /> 
 
-  <param name="spawn_auto_door_24" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+  <param name="spawn_auto_door_24" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_right.sdf" /> 
 
-  <param name="spawn_auto_door_25" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_left.sdf" /> 
+  <param name="spawn_auto_door_25" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_left.sdf" /> 
 
-  <param name="spawn_auto_door_26" command="$(find xacro)/xacro.py $(find dynamic_models)/models/elev_slide_right.sdf" /> 
+  <param name="spawn_auto_door_26" command="$(find xacro)/xacro.py $(find dynamic_gazebo_models)/models/elev_slide_right.sdf" /> 
 
 
 <!-- Spawn -->
