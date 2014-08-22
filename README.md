@@ -21,4 +21,5 @@ Launch sample:
 ```
 roslaunch dynamic_gazebo_models dynamic_models_test.launch
 ```
-There are a lot of models to spawn, so be patient. After a while, you should see a bunch of doors and elevators.
+There are a lot of models to spawn, so be patient. After a while, you should see a bunch of doors and elevators:
+![Flip-open, slide-open, elevators & auto-doors](images/models_screenshot.png)
