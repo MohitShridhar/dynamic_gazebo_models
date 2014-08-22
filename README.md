@@ -5,6 +5,11 @@ If your robotics application requires you to simulate automated doors/elevators 
 
 ### Architecture
 
-The dynamic properties of a model, e.g.:linear & angular velocities, are controlled via topics. These topics are wrapped with a layer of customized services to process commands such as 'open-close state' for flip-open doors  or 'target floor' for elevators.
+The dynamic properties of a model, e.g.:linear & angular velocities, are controlled via topics. These topics are wrapped with a layer of custom services to process commands such as 'open-close state' for flip-open doors  or 'target floor' for elevators.
 
+## Installation
+
+### Dependencies
+ROS Hydro
+Gazebo 3.0+
 
