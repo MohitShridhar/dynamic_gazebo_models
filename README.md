@@ -22,7 +22,7 @@ Launch sample:
 ```bash
 $ roslaunch dynamic_gazebo_models dynamic_models_test.launch
 ```
-There are a lot of models to spawn, so be patient. After a while, you should see a bunch of doors and elevators:
+There are a lot of models to spawn, so be patient. You should see a bunch of doors and elevators:
 ![Flip-open, slide-open, elevators & auto-doors](images/models_screenshot.png)
 
 ## Usage
@@ -91,12 +91,51 @@ Add Group (**cpp**):
     add_group_client.call(addSrv);
 ...
 ```
-Once you have setup your groups, you can use other services such as `/model_dynamics_manager/doors/open_close` in a similar fashion to control the dynamics of the model:
+Once you have setup your groups, you can use other services such as `/model_dynamics_manager/doors/open_close` in a similar fashion to control the dynamics of the model.
+
+Flip-door - Open Doors:
 ```bash
 rosservice call /model_dynamics_manager/doors/open_close "group_name: 'New_group_of_doors'
 state: true"
 ```
 To open doors 1, 3 & 4 simultaneously.
 
+See [example launch file](launch/dynamic_models_test.launch) & [keyboard op](controllers/keyboard_op.cpp) for more sample implementations of the available service calls.
+
+### Models
+You may wish to modify the existing [models](models) or implement your own physical-object and still use the existing [plugins](src/plugins). Before embedding the custom models in your application, ensure that you have configured the SDF file properly.
+
+#### Doors
+```xml
+<plugin name="door_plugin" filename="libdoor_plugin.so">
+    <door_type>flip</door_type>
+    <model_domain_space>door_</model_domain_space>
+    <door_direction>clockwise</door_direction>
+</plugin>
+```
+`door_type` can either be "flip" or "slide". `model_domain_space` is the prefix of the spawn model-name in Gazebo, eg: "door_1" --> prefix: "door_". `door_direction` can either be "counter_clockwise" or "clockwise" for flip-open doors, "left" or "right" for slide-open doors
+
+#### Elevators
+```xml
+<plugin name="elevator_plugin" filename="libelevator.so">
+    <model_domain_space>elevator_</model_domain_space>
+    <floor_heights>0.84108, 3.65461, 6.85066, 10.0470, 13.24549, 16.45915, 19.65369</floor_heights>
+    <speed>1.5</speed>
+    <force>100</force>
+</plugin>
+```
+`floor_heights` are absolute heights (in meters) of the desired floor levels. The values will be indexed (starting with 0 for the ground-floor) in ascending order. So 'target floor 2' in this case maps to a target height of 6.85066m. `speed` specifies the travel velocity of the elevator (in both directions; in m/s). `force` specifies the force exerted on the objects inside the elevator (in Newtons).
+
+#### Auto-Doors
+```xml
+<plugin name="auto_elev_door_plugin" filename="libauto_door.so">
+    <model_domain_space>auto_door_</model_domain_space>
+    <elevator_name>elevator_1</elevator_name>
+    <door_direction>left</door_direction>
+    <max_trans_dist>0.711305</max_trans_dist>
+    <speed>1.0</speed>
+</plugin>
+```
+`elevator_name` is the spawn model-name of the elevator that controls the auto-door. `max_trans_dist` is maximum distance a sliding-door slides from it's spawned position before stopping.
 
 
