@@ -100,7 +100,7 @@ state: true"
 ```
 To open doors 1, 3 & 4 simultaneously.
 
-See [example launch file](launch/dynamic_models_test.launch) & [keyboard op](controllers/keyboard_op.cpp) for more sample implementations of the available service calls.
+See [example launch file](launch/dynamic_models_test.launch) & [keyboard op](src/controllers/keyboard_op.cpp) for more sample implementations of the available service calls.
 
 ### Models
 You may wish to modify the existing [models](models) or implement your own physical-object and still use the existing [plugins](src/plugins). Before embedding the custom models in your application, ensure that you have configured the SDF file properly.
@@ -138,4 +138,7 @@ You may wish to modify the existing [models](models) or implement your own physi
 ```
 `elevator_name` is the spawn model-name of the elevator that controls the auto-door. `max_trans_dist` is maximum distance a sliding-door slides from it's spawned position before stopping.
 
+## More Examples
+
+[multi_map_navigation](https://github.com/MohitShridhar/multi_map_navigation), [oculus_gazebo_navigator](https://github.com/MohitShridhar/oculus_gazebo_navigator)
 
