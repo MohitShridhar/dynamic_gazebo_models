@@ -8,10 +8,15 @@ Gazebo models for simulating doors/elevators. Currently available models: flip-o
 [Catkin](http://wiki.ros.org/catkin): see [package.xml](package.xml)
 
 ## Installation
-Clone and catkin_make
+Clone Repo:
 ```bash
+$ cd <catkin_ws>/src
 $ git clone https://github.com/MohitShridhar/dynamic_gazebo_models.git
+```
+Resolve dependencies (in Ubuntu) & Compile:
+```bash
 $ cd <catkin_ws>
+$ rosdep install --from-paths src --ignore-src --rosdistro hydro -y
 $ catkin_make --pkg dynamic_gazebo_models
 ```
 Launch sample:
