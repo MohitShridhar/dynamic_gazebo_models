@@ -1,7 +1,7 @@
 Dynamic Gazebo Models
 ==============
 
-Gazebo models for simulating doors/elevators. Currently available models: flip-open doors, slide-open doors, elevators with automatic slide-open doors (more coming soon). Plus, the bundle also comes with a generic dynamics-manager to control model groups through ROS service-calls or keyboard-op.
+Gazebo models for simulating doors/elevators. Currently available models: flip-open doors, slide-open doors, elevators with automatic slide-open doors (more coming soon). Plus, the bundle also comes with a generic dynamics-manager to control model groups via ROS service-calls or keyboard-op.
 
 ## Dependencies & Prerequisites
 [ROS Hydro](http://wiki.ros.org/hydro), [Gazebo 3.0+](http://gazebosim.org/), 
