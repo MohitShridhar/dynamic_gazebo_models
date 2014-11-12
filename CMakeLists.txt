@@ -33,9 +33,11 @@ include_directories(${GAZEBO_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS} ${Boost_INCLUD
 
 #Controller Executables:
 add_executable(dynamics_manager src/controllers/dynamics_manager.cpp src/controllers/control_group.h)
+add_dependencies(dynamics_manager ${PROJECT_NAME}_generate_messages_cpp)
 target_link_libraries(dynamics_manager ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${PROTOBUF_LIBRARY})
 
 add_executable(keyboard_op src/controllers/keyboard_op.cpp)
+add_dependencies(keyboard_op ${PROJECT_NAME}_generate_messages_cpp)
 target_link_libraries(keyboard_op ${catkin_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY})
 
 #Plugin Libraries:
