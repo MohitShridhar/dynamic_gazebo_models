@@ -31,12 +31,6 @@ endif()
 
 include_directories(${GAZEBO_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} ${PROTOBUF_INCLUDE_DIR})
 
-
-#set the default path for built executables to the "bin" directory
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
-#set the default path for built libraries to the "lib" directory
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
-
 #Controller Executables:
 add_executable(dynamics_manager src/controllers/dynamics_manager.cpp src/controllers/control_group.h)
 target_link_libraries(dynamics_manager ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${PROTOBUF_LIBRARY})
@@ -53,4 +47,9 @@ target_link_libraries(elevator ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_F
 
 add_library(auto_door src/plugins/auto_elev_door_plugin.cc)
 target_link_libraries(auto_door ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${PROTOBUF_LIBRARY})
+
+install(TARGETS dynamics_manager keyboard_op door_plugin elevator auto_door
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
